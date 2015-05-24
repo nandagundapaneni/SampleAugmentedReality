@@ -7,7 +7,7 @@
 //
 
 #import "AugmentOverlayView.h"
-
+#import "Place.h"
 
 @interface AugmentOverlayView ()
 

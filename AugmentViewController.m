@@ -9,12 +9,20 @@
 
 #import "AugmentViewController.h"
 #import "AugmentOverlayView.h"
+#import "AnnotationView.h"
 #import "PlacesDataController.h"
 #import "Place.h"
+
+
+static const double Radius = 1000;
 
 @interface AugmentViewController ()<CLLocationManagerDelegate,AccelarometerUpdatesProtocol>
 
 @property (nonatomic,strong) AugmentOverlayView* overlayView;
+@property (nonatomic, assign) CLLocationDirection currentHeading;
+@property (nonatomic, strong) CLLocation* currentLocation;
+@property (nonatomic, strong) Places* currentPlacesData;
+@property (nonatomic, strong) NSMutableArray* annotationsArray;
 
 @end
 
@@ -27,15 +35,30 @@
     
     if (self) {
         self.modalPresentationStyle = UIModalPresentationCurrentContext;
-        self.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            self.sourceType = UIImagePickerControllerSourceTypeCamera;
+            self.showsCameraControls = NO;
+            CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 71.0);
+            self.cameraViewTransform = translate;
+            
+            CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
+            self.cameraViewTransform = scale;
+
+            
+        }
+        else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+        {
+            self.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        }
+        else
+        {
+            self.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        }
         self.view.contentMode = UIViewContentModeScaleAspectFill;
-        self.showsCameraControls = NO;
         
-        CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 71.0);
-        self.cameraViewTransform = translate;
         
-        CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
-        self.cameraViewTransform = scale;
+        self.annotationsArray = [NSMutableArray new];
 
     }
     
@@ -46,7 +69,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.cameraOverlayView = self.overlayView;
+    
+    if (self.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        self.cameraOverlayView = self.overlayView;
+    }
+    
+    [self.view insertSubview:self.overlayView atIndex:0];
+    
     
 }
 
@@ -95,23 +124,104 @@
     
     if (currentLocation != nil) {
         
-        [[PlacesDataController manager] retrievePlacesOfInterestForLocation:currentLocation inRadius:500 onCompletion:^(Places *placesData, NSError *error) {
+        self.currentLocation = newLocation;
+        
+        [[PlacesDataController manager] retrievePlacesOfInterestForLocation:currentLocation inRadius:Radius onCompletion:^(Places *placesData, NSError *error) {
             
-            NSLog(@"RESPONSE %@\nERROR %@ HEADING %@",placesData,error,self.overlayView.locationManager.heading);
+            self.currentPlacesData = placesData;
+            
+            CGFloat aViewY = 20;
+            
+            for (Place* place in self.currentPlacesData.places) {
+                AnnotationView* aView = [AnnotationView new];
+                [aView setPlace:place];
+            
+                [aView setFrame:CGRectMake(100, aViewY, CGRectGetWidth(aView.frame), CGRectGetHeight(aView.frame))];
+                
+                [aView setShowAlert:^(NSString *message) {
+                    UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"DETAILS" message:message preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                        [ac dismissViewControllerAnimated:YES completion:nil];
+                    }];
+                    
+                    [ac addAction:cancel];
+                    
+                    [self presentViewController:ac animated:YES completion:nil];
+                    
+                    
+                }];
+                
+                [self.overlayView addSubview:aView];
+                
+                aViewY+= 20;
+                [self.annotationsArray addObject:aView];
+            }
+            
         }];
+        
+        
         
         [self.overlayView.locationManager stopUpdatingLocation];
         [self.overlayView.locationManager startMonitoringSignificantLocationChanges];
+    }
+    
+    else{
+        CLLocation* cLocation = [[CLLocation alloc] initWithLatitude:defaultLat longitude:defaultLng];
+        [[PlacesDataController manager] retrievePlacesOfInterestForLocation:cLocation inRadius:Radius onCompletion:^(Places *placesData, NSError *error) {
+            self.currentPlacesData = placesData;
+            
+            CGFloat aViewY = 20;
+            
+            for (Place* place in self.currentPlacesData.places) {
+                AnnotationView* aView = [AnnotationView new];
+                [aView setPlace:place];
+                
+                [aView setFrame:CGRectMake(100, aViewY, CGRectGetWidth(aView.frame), CGRectGetHeight(aView.frame))];
+                
+                [aView setShowAlert:^(NSString *message) {
+                    UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"DETAILS" message:message preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                        [ac dismissViewControllerAnimated:YES completion:nil];
+                    }];
+                    
+                    [ac addAction:cancel];
+                    
+                    [self presentViewController:ac animated:YES completion:nil];
+                    
+                    
+                }];
+                
+                [self.overlayView addSubview:aView];
+                
+                aViewY+= 20;
+                [self.annotationsArray addObject:aView];
+            }
+
+            
+        }];
     }
 }
 
 - (void) locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
 {
+    NSLog(@"NEW HEADING %@",newHeading);
+    
+    if (newHeading.headingAccuracy < 0)
+    {return;}
+    
+    // Use the true heading if it is valid.
+    CLLocationDirection  theHeading = ((newHeading.trueHeading > 0) ?
+                                       newHeading.trueHeading : newHeading.magneticHeading);
+    
+    self.currentHeading = theHeading;
     
 }
+
 - (void) accelarometerData:(CMAccelerometerData *)data error:(NSError *)error
 {
-    NSLog(@"GYRO %@",data);
+    
 }
 
 @end

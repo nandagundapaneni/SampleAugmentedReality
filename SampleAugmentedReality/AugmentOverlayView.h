@@ -10,6 +10,9 @@
 #import <CoreLocation/CoreLocation.h>
 #import <CoreMotion/CoreMotion.h>
 
+@class Places;
+
+
 @protocol AccelarometerUpdatesProtocol <NSObject>
 
 - (void) accelarometerData:(CMAccelerometerData*)data error:(NSError*)error;
@@ -19,7 +22,7 @@
 
 @property (nonatomic, strong) CLLocationManager* locationManager;
 @property (nonatomic, strong) CMMotionManager* motionManger;
-
+@property (nonatomic, strong) Places* places;
 @property (nonatomic,weak) id<AccelarometerUpdatesProtocol> accelDelegate;
 
 - (void) goToUserLocation;

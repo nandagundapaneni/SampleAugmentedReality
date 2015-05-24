@@ -26,23 +26,12 @@
 }
 - (IBAction)showAugmentView:(id)sender {
     
-#if !TARGET_IPHONE_SIMULATOR
     AugmentViewController* augmentVC = [AugmentViewController new];
     
     [self presentViewController:augmentVC animated:YES completion:^{
         
     }];
 
-#else
-UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Sorry!" message:@"Not supported on Simulator!" preferredStyle:UIAlertControllerStyleAlert];
-
-UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-    [alertController dismissViewControllerAnimated:YES completion:nil];
-}];
-    [alertController addAction:cancel];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-#endif
 }
 
 @end
