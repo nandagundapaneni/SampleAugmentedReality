@@ -8,6 +8,8 @@
 
 #import "AugmentOverlayView.h"
 #import "Place.h"
+#import "AnnotationView.h"
+
 
 @interface AugmentOverlayView ()
 
@@ -78,7 +80,7 @@
             
 
             [self.motionManger startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
-                [self.accelDelegate accelarometerData:accelerometerData error:error];
+                [self.overlayDelegate accelarometerData:accelerometerData error:error];
             }];
              
     }

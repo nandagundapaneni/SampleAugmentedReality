@@ -13,9 +13,10 @@
 @class Places;
 
 
-@protocol AccelarometerUpdatesProtocol <NSObject>
+@protocol OverlayProtocol <NSObject>
 
 - (void) accelarometerData:(CMAccelerometerData*)data error:(NSError*)error;
+- (void) showMessage:(NSString*)message;
 
 @end
 @interface AugmentOverlayView : UIView
@@ -23,7 +24,7 @@
 @property (nonatomic, strong) CLLocationManager* locationManager;
 @property (nonatomic, strong) CMMotionManager* motionManger;
 @property (nonatomic, strong) Places* places;
-@property (nonatomic,weak) id<AccelarometerUpdatesProtocol> accelDelegate;
+@property (nonatomic,weak) id<OverlayProtocol> overlayDelegate;
 
 - (void) goToUserLocation;
 - (void) startMotionManager;

@@ -9,14 +9,13 @@
 
 #import "AugmentViewController.h"
 #import "AugmentOverlayView.h"
-#import "AnnotationView.h"
 #import "PlacesDataController.h"
 #import "Place.h"
 
 
 static const double Radius = 1000;
 
-@interface AugmentViewController ()<CLLocationManagerDelegate,AccelarometerUpdatesProtocol>
+@interface AugmentViewController ()<CLLocationManagerDelegate,OverlayProtocol>
 
 @property (nonatomic,strong) AugmentOverlayView* overlayView;
 @property (nonatomic, assign) CLLocationDirection currentHeading;
@@ -89,7 +88,7 @@ static const double Radius = 1000;
     if (_overlayView == nil) {
         _overlayView = [[AugmentOverlayView alloc] initWithFrame:[UIScreen mainScreen].nativeBounds];
         _overlayView.locationManager.delegate = self;
-        _overlayView.accelDelegate = self;
+        _overlayView.overlayDelegate = self;
     }
     
     return _overlayView;
@@ -118,35 +117,6 @@ static const double Radius = 1000;
         [[PlacesDataController manager] retrievePlacesOfInterestForLocation:currentLocation inRadius:Radius onCompletion:^(Places *placesData, NSError *error) {
             
             self.currentPlacesData = placesData;
-            
-            CGFloat aViewY = 20;
-            
-            for (Place* place in self.currentPlacesData.places) {
-                AnnotationView* aView = [AnnotationView new];
-                [aView setPlace:place];
-            
-                [aView setFrame:CGRectMake(100, aViewY, CGRectGetWidth(aView.frame), CGRectGetHeight(aView.frame))];
-                
-                [aView setShowAlert:^(NSString *message) {
-                    UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"DETAILS" message:message preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                        [ac dismissViewControllerAnimated:YES completion:nil];
-                    }];
-                    
-                    [ac addAction:cancel];
-                    
-                    [self presentViewController:ac animated:YES completion:nil];
-                    
-                    
-                }];
-                
-                [self.overlayView addSubview:aView];
-                
-                aViewY+= 20;
-                [self.annotationsArray addObject:aView];
-            }
-            
         }];
         
         
@@ -169,9 +139,23 @@ static const double Radius = 1000;
     
 }
 
+#pragma mark - Overlay Delegate
 - (void) accelarometerData:(CMAccelerometerData *)data error:(NSError *)error
 {
     
+}
+
+- (void) showMessage:(NSString *)message
+{
+    UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"Details" message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [ac dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+    [ac addAction:cancel];
+    
+    [self presentViewController:ac animated:YES completion:nil];
 }
 
 @end
