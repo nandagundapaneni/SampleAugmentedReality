@@ -28,10 +28,10 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setBackgroundColor:[UIColor yellowColor]];
+        [self setBackgroundColor:[UIColor clearColor]];
         
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
-        [self.nameLabel setTextColor:[UIColor blueColor]];
+        [self.nameLabel setTextColor:[UIColor whiteColor]];
         [self.nameLabel setBackgroundColor:[UIColor clearColor]];
         [self.nameLabel setUserInteractionEnabled:YES];
         [self.nameLabel setFont:[UIFont fontWithName:@"SanFranciscoRounded-Medium" size:16.0]];

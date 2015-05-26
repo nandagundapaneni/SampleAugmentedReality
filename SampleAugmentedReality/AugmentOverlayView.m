@@ -70,7 +70,7 @@
     CGFloat aViewY = 20.0;
     
     for (Place* place in self.places.places) {
-        AnnotationView* aView = [[AnnotationView alloc] initWithFrame:CGRectMake(40, aViewY, 200, 40)];
+        AnnotationView* aView = [[AnnotationView alloc] initWithFrame:CGRectMake(40, aViewY, CGRectGetWidth(self.frame), 40)];
         [aView setPlace:place];
         [self addSubview:aView];
         
