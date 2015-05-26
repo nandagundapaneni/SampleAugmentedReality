@@ -44,18 +44,8 @@ static const double Radius = 1000;
             
             CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
             self.cameraViewTransform = scale;
-
             
         }
-        else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
-        {
-            self.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        }
-        else
-        {
-            self.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-        }
-        self.view.contentMode = UIViewContentModeScaleAspectFill;
         
         
         self.annotationsArray = [NSMutableArray new];
@@ -119,7 +109,7 @@ static const double Radius = 1000;
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
-    NSLog(@"didUpdateToLocation: %@", newLocation);
+    //NSLog(@"didUpdateToLocation: %@", newLocation);
     CLLocation *currentLocation = newLocation;
     
     if (currentLocation != nil) {
@@ -164,43 +154,6 @@ static const double Radius = 1000;
         
         [self.overlayView.locationManager stopUpdatingLocation];
         [self.overlayView.locationManager startMonitoringSignificantLocationChanges];
-    }
-    
-    else{
-        CLLocation* cLocation = [[CLLocation alloc] initWithLatitude:defaultLat longitude:defaultLng];
-        [[PlacesDataController manager] retrievePlacesOfInterestForLocation:cLocation inRadius:Radius onCompletion:^(Places *placesData, NSError *error) {
-            self.currentPlacesData = placesData;
-            
-            CGFloat aViewY = 20;
-            
-            for (Place* place in self.currentPlacesData.places) {
-                AnnotationView* aView = [AnnotationView new];
-                [aView setPlace:place];
-                
-                [aView setFrame:CGRectMake(100, aViewY, CGRectGetWidth(aView.frame), CGRectGetHeight(aView.frame))];
-                
-                [aView setShowAlert:^(NSString *message) {
-                    UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"DETAILS" message:message preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                        [ac dismissViewControllerAnimated:YES completion:nil];
-                    }];
-                    
-                    [ac addAction:cancel];
-                    
-                    [self presentViewController:ac animated:YES completion:nil];
-                    
-                    
-                }];
-                
-                [self.overlayView addSubview:aView];
-                
-                aViewY+= 20;
-                [self.annotationsArray addObject:aView];
-            }
-
-            
-        }];
     }
 }
 
