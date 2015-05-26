@@ -76,6 +76,11 @@
         
         [self.annotationsArray addObject:aView];
         aViewY = CGRectGetMaxY(aView.frame);
+        
+        __weak AugmentOverlayView* weakself = self;
+        [aView setShowAlert:^(NSString *showMessage) {
+            [weakself.overlayDelegate showMessage:showMessage];
+        }];
     }
 }
 
