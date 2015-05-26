@@ -42,15 +42,6 @@
     return _locationManager;
 }
 
-- (CMMotionManager*)motionManger
-{
-    if (_motionManger == nil) {
-        _motionManger = [CMMotionManager new];
-    }
-    
-    return _motionManger;
-}
-
 - (void) setPlaces:(Places *)places
 {
     _places = places;
@@ -97,29 +88,4 @@
     [self.locationManager setHeadingFilter:5];
     [self.locationManager startUpdatingHeading];
 }
-
-- (void) startMotionManager
-{
-    if([self.motionManger isAccelerometerAvailable])
-    {
-        if([self.motionManger isAccelerometerActive] == NO)
-        {
-
-            [self.motionManger setAccelerometerUpdateInterval:5.0f];
-            
-
-            [self.motionManger startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
-                [self.overlayDelegate accelarometerData:accelerometerData error:error];
-            }];
-             
-    }
-    else
-    {
-        NSLog(@"Accelerometer not Available!");
-    }
-    
-    }
-
-}
-
 @end

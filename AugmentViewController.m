@@ -74,7 +74,6 @@ static const double Radius = 1000;
     [super viewDidAppear:animated];
     
     [self.overlayView goToUserLocation];
-    [self.overlayView startMotionManager];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -142,10 +141,6 @@ static const double Radius = 1000;
 }
 
 #pragma mark - Overlay Delegate
-- (void) accelarometerData:(CMAccelerometerData *)data error:(NSError *)error
-{
-    
-}
 
 - (void) showMessage:(NSString *)message
 {
