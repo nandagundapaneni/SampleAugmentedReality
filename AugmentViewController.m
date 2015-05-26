@@ -109,7 +109,6 @@ static const double Radius = 1000;
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
-    //NSLog(@"didUpdateToLocation: %@", newLocation);
     CLLocation *currentLocation = newLocation;
     
     if (currentLocation != nil) {
@@ -159,8 +158,6 @@ static const double Radius = 1000;
 
 - (void) locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
 {
-    NSLog(@"NEW HEADING %@",newHeading);
-    
     if (newHeading.headingAccuracy < 0)
     {return;}
     
