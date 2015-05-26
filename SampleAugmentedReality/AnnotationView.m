@@ -28,10 +28,12 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        [self setBackgroundColor:[UIColor yellowColor]];
+        
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
-        [self.nameLabel setTextColor:[UIColor whiteColor]];
-        [self.nameLabel setBackgroundColor:[UIColor whiteColor]];
-        [self setUserInteractionEnabled:YES];
+        [self.nameLabel setTextColor:[UIColor blueColor]];
+        [self.nameLabel setBackgroundColor:[UIColor clearColor]];
+        [self.nameLabel setUserInteractionEnabled:YES];
         [self.nameLabel setFont:[UIFont fontWithName:@"SanFranciscoRounded-Medium" size:16.0]];
         [self addSubview:self.nameLabel];
         
@@ -39,7 +41,7 @@
         [recongnizer setNumberOfTapsRequired:1];
         [self addGestureRecognizer:recongnizer];
         
-        [self setBackgroundColor:[UIColor yellowColor]];
+        
     }
     return self;
 }

@@ -14,7 +14,7 @@
 @interface AugmentOverlayView ()
 
 @property (nonatomic) CGRect fieldOfView;
-
+@property (nonatomic, strong) NSMutableArray* annotationsArray;
 
 @end
 
@@ -26,6 +26,7 @@
     if (self) {
          [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.4]];
         
+        _annotationsArray = [NSMutableArray new];
         //[self addSubview:self.locationLabel];
     }
     
@@ -50,9 +51,32 @@
     return _motionManger;
 }
 
+- (void) setPlaces:(Places *)places
+{
+    _places = places;
+    
+    [self setNeedsLayout];
+}
+
 - (void) calculateFieldOfView
 {
     
+}
+
+- (void) layoutSubviews
+{
+    [super layoutSubviews];
+    
+    CGFloat aViewY = 20.0;
+    
+    for (Place* place in self.places.places) {
+        AnnotationView* aView = [[AnnotationView alloc] initWithFrame:CGRectMake(40, aViewY, 200, 40)];
+        [aView setPlace:place];
+        [self addSubview:aView];
+        
+        [self.annotationsArray addObject:aView];
+        aViewY = CGRectGetMaxY(aView.frame);
+    }
 }
 
 - (void) goToUserLocation

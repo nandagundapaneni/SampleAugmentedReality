@@ -117,6 +117,8 @@ static const double Radius = 1000;
         [[PlacesDataController manager] retrievePlacesOfInterestForLocation:currentLocation inRadius:Radius onCompletion:^(Places *placesData, NSError *error) {
             
             self.currentPlacesData = placesData;
+            
+            [self.overlayView setPlaces:self.currentPlacesData];
         }];
         
         
