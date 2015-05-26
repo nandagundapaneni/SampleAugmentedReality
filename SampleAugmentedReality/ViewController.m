@@ -26,23 +26,27 @@
 }
 - (IBAction)showAugmentView:(id)sender {
     
-#if !TARGET_IPHONE_SIMULATOR
-    AugmentViewController* augmentVC = [AugmentViewController new];
     
-    [self presentViewController:augmentVC animated:YES completion:^{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        AugmentViewController* augmentVC = [AugmentViewController new];
         
-    }];
+        [self presentViewController:augmentVC animated:YES completion:^{
+            
+        }];
 
-#else
-UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Sorry!" message:@"Not supported on Simulator!" preferredStyle:UIAlertControllerStyleAlert];
-
-UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-    [alertController dismissViewControllerAnimated:YES completion:nil];
-}];
-    [alertController addAction:cancel];
+    }
+    else{
+        UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"No Fun!" message:@"Whats fun in augmented reality without the camera.\nPlease use a phone ;)" preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            [ac dismissViewControllerAnimated:YES completion:nil];
+        }];
+        
+        [ac addAction:cancel];
+        
+        [self presentViewController:ac animated:YES completion:nil];
+    }
     
-    [self presentViewController:alertController animated:YES completion:nil];
-#endif
 }
 
 @end

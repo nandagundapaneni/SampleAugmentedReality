@@ -23,8 +23,7 @@
  #define kTypes @"types"
  */
 
-static const double defaultLng = 151.218237;
-static const double defaultLat = -33.88471;
+
 
 @implementation Place
 

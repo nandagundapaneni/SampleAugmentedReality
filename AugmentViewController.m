@@ -12,9 +12,16 @@
 #import "PlacesDataController.h"
 #import "Place.h"
 
-@interface AugmentViewController ()<CLLocationManagerDelegate,AccelarometerUpdatesProtocol>
+
+static const double Radius = 1000;
+
+@interface AugmentViewController ()<CLLocationManagerDelegate,OverlayProtocol>
 
 @property (nonatomic,strong) AugmentOverlayView* overlayView;
+@property (nonatomic, assign) CLLocationDirection currentHeading;
+@property (nonatomic, strong) CLLocation* currentLocation;
+@property (nonatomic, strong) Places* currentPlacesData;
+@property (nonatomic, strong) NSMutableArray* annotationsArray;
 
 @end
 
@@ -27,15 +34,20 @@
     
     if (self) {
         self.modalPresentationStyle = UIModalPresentationCurrentContext;
-        self.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self.view.contentMode = UIViewContentModeScaleAspectFill;
-        self.showsCameraControls = NO;
         
-        CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 71.0);
-        self.cameraViewTransform = translate;
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            self.sourceType = UIImagePickerControllerSourceTypeCamera;
+            self.showsCameraControls = NO;
+            CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 71.0);
+            self.cameraViewTransform = translate;
+            
+            CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
+            self.cameraViewTransform = scale;
+            
+        }
         
-        CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
-        self.cameraViewTransform = scale;
+        
+        self.annotationsArray = [NSMutableArray new];
 
     }
     
@@ -46,7 +58,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.cameraOverlayView = self.overlayView;
+    
+    if (self.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        self.cameraOverlayView = self.overlayView;
+    }
+    
+    [self.view insertSubview:self.overlayView atIndex:0];
+    
     
 }
 
@@ -56,7 +74,6 @@
     [super viewDidAppear:animated];
     
     [self.overlayView goToUserLocation];
-    [self.overlayView startMotionManager];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,7 +87,7 @@
     if (_overlayView == nil) {
         _overlayView = [[AugmentOverlayView alloc] initWithFrame:[UIScreen mainScreen].nativeBounds];
         _overlayView.locationManager.delegate = self;
-        _overlayView.accelDelegate = self;
+        _overlayView.overlayDelegate = self;
     }
     
     return _overlayView;
@@ -90,15 +107,20 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
-    NSLog(@"didUpdateToLocation: %@", newLocation);
     CLLocation *currentLocation = newLocation;
     
     if (currentLocation != nil) {
         
-        [[PlacesDataController manager] retrievePlacesOfInterestForLocation:currentLocation inRadius:500 onCompletion:^(Places *placesData, NSError *error) {
+        self.currentLocation = newLocation;
+        
+        [[PlacesDataController manager] retrievePlacesOfInterestForLocation:currentLocation inRadius:Radius onCompletion:^(Places *placesData, NSError *error) {
             
-            NSLog(@"RESPONSE %@\nERROR %@ HEADING %@",placesData,error,self.overlayView.locationManager.heading);
+            self.currentPlacesData = placesData;
+            
+            [self.overlayView setPlaces:self.currentPlacesData];
         }];
+        
+        
         
         [self.overlayView.locationManager stopUpdatingLocation];
         [self.overlayView.locationManager startMonitoringSignificantLocationChanges];
@@ -107,11 +129,30 @@
 
 - (void) locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
 {
+    if (newHeading.headingAccuracy < 0)
+    {return;}
+    
+    // Use the true heading if it is valid.
+    CLLocationDirection  theHeading = ((newHeading.trueHeading > 0) ?
+                                       newHeading.trueHeading : newHeading.magneticHeading);
+    
+    self.currentHeading = theHeading;
     
 }
-- (void) accelarometerData:(CMAccelerometerData *)data error:(NSError *)error
+
+#pragma mark - Overlay Delegate
+
+- (void) showMessage:(NSString *)message
 {
-    NSLog(@"GYRO %@",data);
+    UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"Details" message:message preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [ac dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+    [ac addAction:cancel];
+    
+    [self presentViewController:ac animated:YES completion:nil];
 }
 
 @end

@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class Place;
+
 @interface AnnotationView : UIView
 
+@property (nonatomic,strong) Place* place;
+@property (nonatomic, copy) void (^showAlert)(NSString* message);
 @end

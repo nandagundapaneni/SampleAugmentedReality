@@ -7,12 +7,14 @@
 //
 
 #import "AugmentOverlayView.h"
+#import "Place.h"
+#import "AnnotationView.h"
 
 
 @interface AugmentOverlayView ()
 
 @property (nonatomic) CGRect fieldOfView;
-
+@property (nonatomic, strong) NSMutableArray* annotationsArray;
 
 @end
 
@@ -24,6 +26,7 @@
     if (self) {
          [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.4]];
         
+        _annotationsArray = [NSMutableArray new];
         //[self addSubview:self.locationLabel];
     }
     
@@ -39,18 +42,37 @@
     return _locationManager;
 }
 
-- (CMMotionManager*)motionManger
+- (void) setPlaces:(Places *)places
 {
-    if (_motionManger == nil) {
-        _motionManger = [CMMotionManager new];
-    }
+    _places = places;
     
-    return _motionManger;
+    [self setNeedsLayout];
 }
 
 - (void) calculateFieldOfView
 {
     
+}
+
+- (void) layoutSubviews
+{
+    [super layoutSubviews];
+    
+    CGFloat aViewY = 20.0;
+    
+    for (Place* place in self.places.places) {
+        AnnotationView* aView = [[AnnotationView alloc] initWithFrame:CGRectMake(40, aViewY, CGRectGetWidth(self.frame), 40)];
+        [aView setPlace:place];
+        [self addSubview:aView];
+        
+        [self.annotationsArray addObject:aView];
+        aViewY = CGRectGetMaxY(aView.frame);
+        
+        __weak AugmentOverlayView* weakself = self;
+        [aView setShowAlert:^(NSString *showMessage) {
+            [weakself.overlayDelegate showMessage:showMessage];
+        }];
+    }
 }
 
 - (void) goToUserLocation
@@ -66,29 +88,4 @@
     [self.locationManager setHeadingFilter:5];
     [self.locationManager startUpdatingHeading];
 }
-
-- (void) startMotionManager
-{
-    if([self.motionManger isAccelerometerAvailable])
-    {
-        if([self.motionManger isAccelerometerActive] == NO)
-        {
-
-            [self.motionManger setAccelerometerUpdateInterval:5.0f];
-            
-
-            [self.motionManger startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error) {
-                [self.accelDelegate accelarometerData:accelerometerData error:error];
-            }];
-             
-    }
-    else
-    {
-        NSLog(@"Accelerometer not Available!");
-    }
-    
-    }
-
-}
-
 @end

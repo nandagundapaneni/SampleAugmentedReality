@@ -1,3 +1,9 @@
 
 xcuserdata/
 xcshareddata/
+
+*.xcbkptlist
+
+*.xcbkptlist
+
+SampleAugmentedReality.xcodeproj/xcuserdata/nanda.gundapaneni.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
