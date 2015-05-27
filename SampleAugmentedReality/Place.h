@@ -20,6 +20,12 @@
 #define kVicinity @"vicinity"
 #define kTypes @"types"
 
+/** Degrees to Radian **/
+#define degreesToRadians( degrees ) ( ( degrees ) / 180.0 * M_PI )
+
+/** Radians to Degrees **/
+#define radiansToDegrees( radians ) ( ( radians ) * ( 180.0 / M_PI ) )
+
 typedef NS_ENUM(NSInteger, HEADINGQUADARANT)
 {
     HEADINGQUADARANT_UNKNOWN,
@@ -47,8 +53,10 @@ static const double defaultLat = -33.88471;
 @property (nonatomic,strong) NSArray* types;
 @property (nonatomic,strong) NSString* vicinityAddress;
 @property (nonatomic,strong) CLLocation* placeLocation;
+@property (nonatomic,strong) CLLocation* originLocation;
 @property (nonatomic,assign) MAGNETIC_ magenticDirectionLat;
 @property (nonatomic,assign) MAGNETIC_ magenticDirectionLng;
+@property (nonatomic,assign) HEADINGQUADARANT actualDirection;
 
 - (void) fillFromDictionay:(NSDictionary*)dataDict;
 
@@ -56,7 +64,7 @@ static const double defaultLat = -33.88471;
 
 
 @interface Places : NSObject
-
+@property (nonatomic,strong) CLLocation* originLocation;
 @property (nonatomic, strong) NSArray* places;
 - (void) fillFromDictionay:(NSDictionary*)dataDict;
 @end

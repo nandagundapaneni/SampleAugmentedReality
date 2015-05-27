@@ -119,9 +119,6 @@ static const double Radius = 10000;
             
             [self.overlayView setPlaces:self.currentPlacesData];
             
-            for (Place* p in self.currentPlacesData.places) {
-                NSLog(@"p : %@ -- %@",@(p.magenticDirectionLat),@(p.magenticDirectionLng));
-            }
         }];
         
         

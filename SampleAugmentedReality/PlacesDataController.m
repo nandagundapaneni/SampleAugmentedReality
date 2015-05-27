@@ -33,6 +33,7 @@ static NSString * const BaseURLString = @"https://maps.googleapis.com/maps/api/p
         Places *places = [Places new];
         
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            [places setOriginLocation:currentLocation];
             [places fillFromDictionay:responseObject];
         }
         

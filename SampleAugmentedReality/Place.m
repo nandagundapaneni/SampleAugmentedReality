@@ -91,15 +91,93 @@
         self.placeLocation = [[CLLocation alloc] initWithLatitude:defaultLat longitude:defaultLng];
         self.magenticDirectionLat = MAGNETIC_NORTH;
         self.magenticDirectionLng = MAGNETIC_WEST;
+        
     }
     else{
         self.placeLocation = [[CLLocation alloc] initWithLatitude:[dict[kLat] doubleValue] longitude:[dict[kLng] doubleValue]];
         
         self.magenticDirectionLat = (self.placeLocation.coordinate.latitude >=0)?MAGNETIC_NORTH:MAGNETIC_SOUTH;
         self.magenticDirectionLng = (self.placeLocation.coordinate.longitude >=0)?MAGNETIC_EAST:MAGNETIC_WEST;
+        
     }
+    [self directionToTarget:self.placeLocation.coordinate];
 }
-   
+
+/*
+ function getDegrees(lat1, long1, lat2, long2, headX) {
+ 
+ var dLat = toRad(lat2-lat1);
+ var dLon = toRad(lon2-lon1);
+ 
+ lat1 = toRad(lat1);
+ lat2 = toRad(lat2);
+ 
+ var y = sin(dLon) * cos(lat2);
+ var x = cos(lat1)*sin(lat2) -
+ sin(lat1)*cos(lat2)*cos(dLon);
+ var brng = toDeg(atan2(y, x));
+ 
+ // fix negative degrees
+ if(brng<0) {
+ brng=360-abs(brng);
+ }
+ 
+ return brng - headX;
+ }
+ */
+
+- (void) directionToTarget:(CLLocationCoordinate2D)target
+{
+    //double dLat = degreesToRadians(target.latitude-self.originLocation.coordinate.latitude);
+    double dLon = degreesToRadians(target.longitude-self.originLocation.coordinate.longitude);
+    
+    double lat1 = degreesToRadians(target.latitude);
+    double lat2 = degreesToRadians(self.originLocation.coordinate.latitude);
+    
+    double y = sin(dLon) * cos(lat2);
+    double x = cos(lat1)*sin(lat2) -
+    sin(lat1)*cos(lat2)*cos(dLon);
+    double brng = radiansToDegrees(atan2(y, x));
+    
+    // fix negative degrees
+    if(brng<0) {
+        brng=360-fabs(brng);
+    }
+    
+    [self headingQuadFromHeading:brng];
+}
+
+
+- (void) headingQuadFromHeading:(CLLocationDirection)heading
+{
+    if (heading < MAGNETIC_NORTH) {
+        self.actualDirection = HEADINGQUADARANT_UNKNOWN;
+        return;
+    }
+    
+    if (heading >= MAGNETIC_NORTH && heading <= MAGNETIC_EAST) {
+        self.actualDirection = HEADINGQUADARANT_NE;
+        return;
+    }
+    
+    if (heading >= MAGNETIC_EAST && heading <= MAGNETIC_SOUTH) {
+        self.actualDirection = HEADINGQUADARANT_SE;
+        return;
+    }
+    
+    if (heading >= MAGNETIC_SOUTH  && heading <= MAGNETIC_WEST) {
+        self.actualDirection = HEADINGQUADARANT_SW;
+        return;
+    }
+    
+    if (heading >= MAGNETIC_WEST) {
+        self.actualDirection = HEADINGQUADARANT_NW;
+        return;
+    }
+    
+    
+}
+
 @end
 
 @implementation Places
@@ -108,7 +186,7 @@
 {
     if (dataDict == nil) {
         self.places = @[];
-        
+        self.originLocation = [[CLLocation alloc] initWithLatitude:defaultLat longitude:defaultLng];
         return;
     }
     
@@ -121,7 +199,7 @@
                     NSDictionary* dataDict = (NSDictionary*)obj;
                     
                     Place* currentPlace = [Place new];
-                    
+                    currentPlace.originLocation = self.originLocation;
                     [currentPlace fillFromDictionay:dataDict];
                     
                     [dataArray addObject:currentPlace];

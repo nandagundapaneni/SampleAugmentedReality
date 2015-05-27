@@ -61,7 +61,6 @@
 
 - (void) headingQuadFromHeading:(CLLocationDirection)heading
 {
-    NSLog(@"CURRENT QUAD:%@", @(self.currentQuadrant));
     if (heading < MAGNETIC_NORTH) {
         self.currentQuadrant = HEADINGQUADARANT_UNKNOWN;
         return;
@@ -147,8 +146,7 @@
 - (void) showAnnotationsForCurrentFieldOfView
 {
     for (AnnotationView* aView in self.annotationsArray) {
-        HEADINGQUADARANT currentQuad = [self headingQuadFromMagLocation:aView.place.magenticDirectionLat longLoc:aView.place.magenticDirectionLng];
-        if (self.currentQuadrant == currentQuad) {
+        if (self.currentQuadrant == aView.place.actualDirection) {
             [aView setHidden:NO];
         }
         else{
