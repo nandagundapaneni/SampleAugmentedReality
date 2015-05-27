@@ -11,7 +11,7 @@
 #import "AugmentOverlayView.h"
 #import "PlacesDataController.h"
 #import "Place.h"
-
+#import "SVProgressHUD.h"
 
 static const double Radius = 3200;
 
@@ -113,8 +113,9 @@ static const double Radius = 3200;
         
         self.currentLocation = newLocation;
         
+        [SVProgressHUD show];
         [[PlacesDataController manager] retrievePlacesOfInterestForLocation:currentLocation inRadius:Radius onCompletion:^(Places *placesData, NSError *error) {
-            
+            [SVProgressHUD dismiss];
             self.currentPlacesData = placesData;
             
             [self.overlayView setPlaces:self.currentPlacesData];
