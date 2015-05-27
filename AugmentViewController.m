@@ -13,7 +13,7 @@
 #import "Place.h"
 
 
-static const double Radius = 10000;
+static const double Radius = 3200;
 
 @interface AugmentViewController ()<CLLocationManagerDelegate,OverlayProtocol>
 
