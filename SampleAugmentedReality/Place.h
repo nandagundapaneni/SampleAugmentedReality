@@ -27,6 +27,7 @@
 #define radiansToDegrees( radians ) ( ( radians ) * ( 180.0 / M_PI ) )
 
 static const double R = 6373.00;
+static const NSInteger MAX_PLACES = 20;
 
 typedef NS_ENUM(NSInteger, HEADINGQUADARANT)
 {

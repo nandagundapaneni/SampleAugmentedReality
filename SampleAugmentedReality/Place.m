@@ -104,29 +104,6 @@
     [self distanceToLocation:self.placeLocation.coordinate];
 }
 
-/*
- function getDegrees(lat1, long1, lat2, long2, headX) {
- 
- var dLat = toRad(lat2-lat1);
- var dLon = toRad(lon2-lon1);
- 
- lat1 = toRad(lat1);
- lat2 = toRad(lat2);
- 
- var y = sin(dLon) * cos(lat2);
- var x = cos(lat1)*sin(lat2) -
- sin(lat1)*cos(lat2)*cos(dLon);
- var brng = toDeg(atan2(y, x));
- 
- // fix negative degrees
- if(brng<0) {
- brng=360-abs(brng);
- }
- 
- return brng - headX;
- }
- */
-
 - (void) directionToTarget:(CLLocationCoordinate2D)target
 {
     //double dLat = degreesToRadians(target.latitude-self.originLocation.coordinate.latitude);
@@ -190,8 +167,6 @@
     double a = pow(sin(dLat/2), 2) + cos(lat1) * cos(lat2) * pow(sin(dLon/2), 2);
     double c = 2 * atan2( sqrt(a), sqrt(1-a) );
     self.distanceToOrigin = R * c;
-    
-    NSLog(@"D %@",@(self.distanceToOrigin));
 }
 
 @end
@@ -210,15 +185,23 @@
     if (dataDict[kResults] != nil) {
         if ([dataDict[kResults] isKindOfClass:[NSArray class]]) {
             NSMutableArray* dataArray = [NSMutableArray new];
+            NSInteger idx = 1;
+            
             for (id obj in dataDict[kResults]) {
                 if ([obj isKindOfClass:[NSDictionary class]]) {
+                    if (idx == MAX_PLACES) {
+                        break;
+                    }
+                    
                     NSDictionary* dataDict = (NSDictionary*)obj;
                     
                     Place* currentPlace = [Place new];
                     currentPlace.originLocation = self.originLocation;
                     [currentPlace fillFromDictionay:dataDict];
+
                     
                     [dataArray addObject:currentPlace];
+                    idx += 1;
                     
                 }
             }
