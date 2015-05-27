@@ -26,6 +26,8 @@
 /** Radians to Degrees **/
 #define radiansToDegrees( radians ) ( ( radians ) * ( 180.0 / M_PI ) )
 
+static const double R = 6373.00;
+
 typedef NS_ENUM(NSInteger, HEADINGQUADARANT)
 {
     HEADINGQUADARANT_UNKNOWN,
@@ -57,6 +59,7 @@ static const double defaultLat = -33.88471;
 @property (nonatomic,assign) MAGNETIC_ magenticDirectionLat;
 @property (nonatomic,assign) MAGNETIC_ magenticDirectionLng;
 @property (nonatomic,assign) HEADINGQUADARANT actualDirection;
+@property (nonatomic,assign) double distanceToOrigin;
 
 - (void) fillFromDictionay:(NSDictionary*)dataDict;
 

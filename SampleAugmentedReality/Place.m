@@ -101,6 +101,7 @@
         
     }
     [self directionToTarget:self.placeLocation.coordinate];
+    [self distanceToLocation:self.placeLocation.coordinate];
 }
 
 /*
@@ -178,6 +179,21 @@
     
 }
 
+- (void) distanceToLocation:(CLLocationCoordinate2D)target
+{
+    double dLat = degreesToRadians(target.latitude-self.originLocation.coordinate.latitude);
+    double dLon = degreesToRadians(target.longitude-self.originLocation.coordinate.longitude);
+    
+    double lat1 = degreesToRadians(target.latitude);
+    double lat2 = degreesToRadians(self.originLocation.coordinate.latitude);
+
+    double a = pow(sin(dLat/2), 2) + cos(lat1) * cos(lat2) * pow(sin(dLon/2), 2);
+    double c = 2 * atan2( sqrt(a), sqrt(1-a) );
+    self.distanceToOrigin = R * c;
+    
+    NSLog(@"D %@",@(self.distanceToOrigin));
+}
+
 @end
 
 @implementation Places
@@ -206,6 +222,9 @@
                     
                 }
             }
+            
+            NSSortDescriptor* desc = [NSSortDescriptor sortDescriptorWithKey:@"distanceToOrigin" ascending:YES];
+            [dataArray sortUsingDescriptors:@[desc]];
             
             self.places = [NSArray arrayWithArray:dataArray];
         }
