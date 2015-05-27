@@ -13,7 +13,7 @@
 #import "Place.h"
 
 
-static const double Radius = 1000;
+static const double Radius = 10000;
 
 @interface AugmentViewController ()<CLLocationManagerDelegate,OverlayProtocol>
 
@@ -118,6 +118,10 @@ static const double Radius = 1000;
             self.currentPlacesData = placesData;
             
             [self.overlayView setPlaces:self.currentPlacesData];
+            
+            for (Place* p in self.currentPlacesData.places) {
+                NSLog(@"p : %@ -- %@",@(p.magenticDirectionLat),@(p.magenticDirectionLng));
+            }
         }];
         
         

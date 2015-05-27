@@ -55,6 +55,8 @@
     _heading = heading;
     
     [self headingQuadFromHeading:_heading];
+    
+    [self showAnnotationsForCurrentFieldOfView];
 }
 
 - (void) headingQuadFromHeading:(CLLocationDirection)heading
@@ -88,6 +90,28 @@
     
 }
 
+- (HEADINGQUADARANT) headingQuadFromMagLocation:(MAGNETIC_)latLoc longLoc:(MAGNETIC_)longLoc
+{
+    if (latLoc == MAGNETIC_NORTH && longLoc == MAGNETIC_EAST) {
+        return HEADINGQUADARANT_NE;
+    }
+    
+    if (latLoc == MAGNETIC_NORTH && longLoc == MAGNETIC_WEST) {
+        return HEADINGQUADARANT_NW;
+    }
+    
+    if (latLoc == MAGNETIC_SOUTH && longLoc == MAGNETIC_EAST) {
+        return HEADINGQUADARANT_SE;
+    }
+    
+    if (latLoc == MAGNETIC_SOUTH && longLoc == MAGNETIC_WEST) {
+        return HEADINGQUADARANT_SW;
+    }
+    
+    
+    return HEADINGQUADARANT_NE;
+    
+}
 - (void) drawAnnotations
 {
     
@@ -95,21 +119,42 @@
         [sview removeFromSuperview];
     }
     
-    CGFloat aViewY = 20.0;
+    [self.annotationsArray removeAllObjects];
+    
+    CGFloat aviewY = 20;
+    
     for (Place* place in self.places.places) {
-        AnnotationView* aView = [[AnnotationView alloc] initWithFrame:CGRectMake(40, aViewY, CGRectGetWidth(self.frame), 40)];
+        AnnotationView* aView = [[AnnotationView alloc] initWithFrame:CGRectMake(40, aviewY, CGRectGetWidth(self.frame), 40)];
         [aView setPlace:place];
         [self addSubview:aView];
         
+        [aView setHidden:YES];
+        
         [self.annotationsArray addObject:aView];
-        aViewY = CGRectGetMaxY(aView.frame);
+        
+        aviewY = CGRectGetMaxY(aView.frame);
         
         __weak AugmentOverlayView* weakself = self;
         [aView setShowAlert:^(NSString *showMessage) {
             [weakself.overlayDelegate showMessage:showMessage];
         }];
     }
+    
+    [self showAnnotationsForCurrentFieldOfView];
 
+}
+
+- (void) showAnnotationsForCurrentFieldOfView
+{
+    for (AnnotationView* aView in self.annotationsArray) {
+        HEADINGQUADARANT currentQuad = [self headingQuadFromMagLocation:aView.place.magenticDirectionLat longLoc:aView.place.magenticDirectionLng];
+        if (self.currentQuadrant == currentQuad) {
+            [aView setHidden:NO];
+        }
+        else{
+            [aView setHidden:YES];
+        }
+    }
 }
 
 - (void) layoutSubviews
