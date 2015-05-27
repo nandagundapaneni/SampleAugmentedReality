@@ -140,7 +140,6 @@
 		36881C9B1B0D32CC007FB12F = {
 			isa = PBXGroup;
 			children = (
-				3674B1F21B16565000FFFF96 /* QuartzCore.framework */,
 				36881CA61B0D32CC007FB12F /* SampleAugmentedReality */,
 				36881CC01B0D32CC007FB12F /* SampleAugmentedRealityTests */,
 				36881CA51B0D32CC007FB12F /* Products */,
@@ -176,6 +175,7 @@
 		36881CA71B0D32CC007FB12F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3674B1F21B16565000FFFF96 /* QuartzCore.framework */,
 				36881D051B0E6C9C007FB12F /* AFNetworking */,
 				36881CDA1B0D3DD5007FB12F /* CoreLocation.framework */,
 				36881CD81B0D38A2007FB12F /* MapKit.framework */,
