@@ -20,6 +20,14 @@
 #define kVicinity @"vicinity"
 #define kTypes @"types"
 
+typedef NS_ENUM(NSInteger, MAGNETIC_)
+{
+    MAGNETIC_NORTH = 1,
+    MAGNETIC_SOUTH,
+    MAGNETIC_EAST,
+    MAGNETIC_WEST
+};
+
 static const double defaultLng = 151.218237;
 static const double defaultLat = -33.88471;
 
@@ -30,7 +38,8 @@ static const double defaultLat = -33.88471;
 @property (nonatomic,strong) NSArray* types;
 @property (nonatomic,strong) NSString* vicinityAddress;
 @property (nonatomic,strong) CLLocation* placeLocation;
-
+@property (nonatomic,assign) MAGNETIC_ magenticDirectionLat;
+@property (nonatomic,assign) MAGNETIC_ magenticDirectionLng;
 
 - (void) fillFromDictionay:(NSDictionary*)dataDict;
 

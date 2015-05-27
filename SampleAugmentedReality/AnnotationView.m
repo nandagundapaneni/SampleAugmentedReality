@@ -33,6 +33,7 @@
         self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), CGRectGetHeight(frame))];
         [self.nameLabel setTextColor:[UIColor whiteColor]];
         [self.nameLabel setBackgroundColor:[UIColor clearColor]];
+        [self.nameLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self.nameLabel setUserInteractionEnabled:YES];
         [self.nameLabel setFont:[UIFont fontWithName:@"SanFranciscoRounded-Medium" size:16.0]];
         [self addSubview:self.nameLabel];

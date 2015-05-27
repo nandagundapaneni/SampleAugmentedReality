@@ -46,6 +46,8 @@
         self.vicinityAddress = @"";
         self.types = @[];
         self.placeLocation = [[CLLocation alloc] initWithLatitude:defaultLat longitude:defaultLng];
+        self.magenticDirectionLat = MAGNETIC_NORTH;
+        self.magenticDirectionLng = MAGNETIC_EAST;
         
         return;
     }
@@ -87,9 +89,14 @@
 {
     if (dict == nil) {
         self.placeLocation = [[CLLocation alloc] initWithLatitude:defaultLat longitude:defaultLng];
+        self.magenticDirectionLat = MAGNETIC_NORTH;
+        self.magenticDirectionLng = MAGNETIC_WEST;
     }
     else{
         self.placeLocation = [[CLLocation alloc] initWithLatitude:[dict[kLat] doubleValue] longitude:[dict[kLng] doubleValue]];
+        
+        self.magenticDirectionLat = (self.placeLocation.coordinate.latitude >=0)?MAGNETIC_NORTH:MAGNETIC_SOUTH;
+        self.magenticDirectionLng = (self.placeLocation.coordinate.longitude >=0)?MAGNETIC_EAST:MAGNETIC_WEST;
     }
 }
    
