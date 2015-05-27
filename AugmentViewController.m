@@ -44,6 +44,8 @@ static const double Radius = 3200;
             CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
             self.cameraViewTransform = scale;
             
+            [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
+            [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
         }
         
         
@@ -113,6 +115,7 @@ static const double Radius = 3200;
         
         self.currentLocation = newLocation;
         
+
         [SVProgressHUD show];
         [[PlacesDataController manager] retrievePlacesOfInterestForLocation:currentLocation inRadius:Radius onCompletion:^(Places *placesData, NSError *error) {
             [SVProgressHUD dismiss];
