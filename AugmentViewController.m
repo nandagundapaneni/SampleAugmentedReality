@@ -138,6 +138,8 @@ static const double Radius = 1000;
     
     self.currentHeading = theHeading;
     
+    [self.overlayView setHeading:self.currentHeading];
+    
 }
 
 #pragma mark - Overlay Delegate

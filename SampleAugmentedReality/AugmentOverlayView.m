@@ -7,7 +7,6 @@
 //
 
 #import "AugmentOverlayView.h"
-#import "Place.h"
 #import "AnnotationView.h"
 
 
@@ -27,6 +26,8 @@
          [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.4]];
         
         _annotationsArray = [NSMutableArray new];
+        _currentQuadrant = HEADINGQUADARANT_NE;
+        
         //[self addSubview:self.locationLabel];
     }
     
@@ -46,20 +47,55 @@
 {
     _places = places;
     
-    [self setNeedsLayout];
+    [self drawAnnotations];
 }
 
-- (void) calculateFieldOfView
+- (void) setHeading:(CLLocationDirection)heading
 {
+    _heading = heading;
+    
+    [self headingQuadFromHeading:_heading];
+}
+
+- (void) headingQuadFromHeading:(CLLocationDirection)heading
+{
+    NSLog(@"CURRENT QUAD:%@", @(self.currentQuadrant));
+    if (heading < MAGNETIC_NORTH) {
+        self.currentQuadrant = HEADINGQUADARANT_UNKNOWN;
+        return;
+    }
+    
+    if (heading >= MAGNETIC_NORTH && heading <= MAGNETIC_EAST) {
+        self.currentQuadrant = HEADINGQUADARANT_NE;
+        return;
+    }
+    
+    if (heading >= MAGNETIC_EAST && heading <= MAGNETIC_SOUTH) {
+        self.currentQuadrant = HEADINGQUADARANT_SE;
+        return;
+    }
+    
+    if (heading >= MAGNETIC_SOUTH  && heading <= MAGNETIC_WEST) {
+        self.currentQuadrant = HEADINGQUADARANT_SW;
+        return;
+    }
+    
+    if (heading >= MAGNETIC_WEST) {
+        self.currentQuadrant = HEADINGQUADARANT_NW;
+        return;
+    }
+    
     
 }
 
-- (void) layoutSubviews
+- (void) drawAnnotations
 {
-    [super layoutSubviews];
+    
+    for (UIView* sview in self.annotationsArray) {
+        [sview removeFromSuperview];
+    }
     
     CGFloat aViewY = 20.0;
-    
     for (Place* place in self.places.places) {
         AnnotationView* aView = [[AnnotationView alloc] initWithFrame:CGRectMake(40, aViewY, CGRectGetWidth(self.frame), 40)];
         [aView setPlace:place];
@@ -73,6 +109,13 @@
             [weakself.overlayDelegate showMessage:showMessage];
         }];
     }
+
+}
+
+- (void) layoutSubviews
+{
+    [super layoutSubviews];
+    
 }
 
 - (void) goToUserLocation

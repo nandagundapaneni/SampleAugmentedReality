@@ -20,6 +20,15 @@
 #define kVicinity @"vicinity"
 #define kTypes @"types"
 
+typedef NS_ENUM(NSInteger, HEADINGQUADARANT)
+{
+    HEADINGQUADARANT_UNKNOWN,
+    HEADINGQUADARANT_NE = 1,
+    HEADINGQUADARANT_NW,
+    HEADINGQUADARANT_SE,
+    HEADINGQUADARANT_SW,
+};
+
 typedef NS_ENUM(NSInteger, MAGNETIC_)
 {
     MAGNETIC_NORTH = 0,

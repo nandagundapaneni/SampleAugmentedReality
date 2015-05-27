@@ -64,4 +64,11 @@
     
 }
 
+- (void) layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self.nameLabel setFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame))];
+}
+
 @end
