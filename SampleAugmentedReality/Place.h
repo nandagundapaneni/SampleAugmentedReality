@@ -22,10 +22,10 @@
 
 typedef NS_ENUM(NSInteger, MAGNETIC_)
 {
-    MAGNETIC_NORTH = 1,
-    MAGNETIC_SOUTH,
-    MAGNETIC_EAST,
-    MAGNETIC_WEST
+    MAGNETIC_NORTH = 0,
+    MAGNETIC_EAST = 90,
+    MAGNETIC_SOUTH = 180,
+    MAGNETIC_WEST = 270
 };
 
 static const double defaultLng = 151.218237;
