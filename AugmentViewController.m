@@ -23,6 +23,7 @@ static const double Radius = 3200;
 @property (nonatomic, strong) Places* currentPlacesData;
 @property (nonatomic, strong) NSMutableArray* annotationsArray;
 
+
 @end
 
 @implementation AugmentViewController
@@ -47,6 +48,8 @@ static const double Radius = 3200;
             [SVProgressHUD setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
             [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
         }
+        
+        
         
         
         self.annotationsArray = [NSMutableArray new];
@@ -94,6 +97,7 @@ static const double Radius = 3200;
     
     return _overlayView;
 }
+
 
 #pragma mark - CLLocationManagerDelegate Methods
 
@@ -149,6 +153,10 @@ static const double Radius = 3200;
 
 #pragma mark - Overlay Delegate
 
+- (void) doneTapped
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 - (void) showMessage:(NSString *)message
 {
     UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"Details" message:message preferredStyle:UIAlertControllerStyleAlert];

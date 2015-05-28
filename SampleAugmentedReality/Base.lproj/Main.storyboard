@@ -16,24 +16,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37P-P8-Ehm">
-                                <rect key="frame" x="277" y="263" width="75" height="30"/>
-                                <state key="normal" title="Augment it">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="showAugmentView:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="kAU-Q5-ker"/>
-                                </connections>
-                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap anywhere on the screen" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="159-I5-9vL">
+                                <rect key="frame" x="193" y="289" width="215" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="GTS-pg-6jF"/>
+                                    <constraint firstAttribute="width" constant="215" id="jwr-95-3up"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="37P-P8-Ehm" secondAttribute="centerY" constant="22" id="Wo1-mh-B07"/>
-                            <constraint firstAttribute="centerX" secondItem="37P-P8-Ehm" secondAttribute="centerX" constant="-14.5" id="nr3-GS-rWU"/>
+                            <constraint firstAttribute="centerX" secondItem="159-I5-9vL" secondAttribute="centerX" constant="-0.5" id="M9u-j9-geQ"/>
+                            <constraint firstAttribute="centerY" secondItem="159-I5-9vL" secondAttribute="centerY" constant="0.5" id="zSf-kF-d4F"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="bmc-4Y-9ml" appends="YES" id="U3V-FW-bC2"/>
+                        </connections>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="bmc-4Y-9ml">
+                    <connections>
+                        <action selector="screenTapped:" destination="vXZ-lx-hvc" id="FcT-f4-Vr7"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
         </scene>
     </scenes>

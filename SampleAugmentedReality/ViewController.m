@@ -24,8 +24,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (IBAction)showAugmentView:(id)sender {
-    
+
+- (IBAction)screenTapped:(id)sender {
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         AugmentViewController* augmentVC = [AugmentViewController new];
@@ -33,7 +33,7 @@
         [self presentViewController:augmentVC animated:YES completion:^{
             
         }];
-
+        
     }
     else{
         UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"No Fun!" message:@"Whats fun in augmented reality without the camera.\nPlease use a phone ;)" preferredStyle:UIAlertControllerStyleAlert];
@@ -46,6 +46,7 @@
         
         [self presentViewController:ac animated:YES completion:nil];
     }
+
     
 }
 

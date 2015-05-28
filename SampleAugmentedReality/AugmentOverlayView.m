@@ -14,6 +14,7 @@
 
 @property (nonatomic) CGRect fieldOfView;
 @property (nonatomic, strong) NSMutableArray* annotationsArray;
+@property (nonatomic, strong) UIButton* doneButton;
 
 @end
 
@@ -28,7 +29,7 @@
         _annotationsArray = [NSMutableArray new];
         _currentQuadrant = HEADINGQUADARANT_NE;
         
-        //[self addSubview:self.locationLabel];
+        [self addSubview:self.doneButton];
     }
     
     return self;
@@ -41,6 +42,20 @@
     }
     
     return _locationManager;
+}
+
+- (UIButton*) doneButton
+{
+    if (_doneButton == nil) {
+        _doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [_doneButton setFrame:CGRectMake(10, 15, 50, 30)];
+        [_doneButton setTitle:@"Done" forState:UIControlStateNormal];
+        [_doneButton.layer setBorderColor:[UIColor blueColor].CGColor];
+        [_doneButton.layer setBorderWidth:1];
+        [_doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_doneButton addTarget:self action:@selector(doneTapped) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _doneButton;
 }
 
 - (void) setPlaces:(Places *)places
@@ -57,6 +72,11 @@
     [self headingQuadFromHeading:_heading];
     
     [self showAnnotationsForCurrentFieldOfView];
+}
+
+- (void) doneTapped
+{
+    [self.overlayDelegate doneTapped];
 }
 
 - (void) headingQuadFromHeading:(CLLocationDirection)heading
@@ -120,7 +140,7 @@
     
     [self.annotationsArray removeAllObjects];
     
-    CGFloat aviewY = 20;
+    CGFloat aviewY = 50;
     
     for (Place* place in self.places.places) {
         AnnotationView* aView = [[AnnotationView alloc] initWithFrame:CGRectMake(40, aviewY, CGRectGetWidth(self.frame), 30)];
