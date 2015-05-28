@@ -124,7 +124,7 @@ static const double Radius = 3200;
         [[PlacesDataController manager] retrievePlacesOfInterestForLocation:currentLocation inRadius:Radius onCompletion:^(Places *placesData, NSError *error) {
             [SVProgressHUD dismiss];
             self.currentPlacesData = placesData;
-            
+            [self.currentPlacesData setOverlayRect:self.overlayView.bounds];
             [self.overlayView setPlaces:self.currentPlacesData];
             
         }];

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <UIKit/UIKit.h>
 
 #define kResults @"results"
 #define kPlace_id @"place_id"
@@ -26,8 +27,8 @@
 /** Radians to Degrees **/
 #define radiansToDegrees( radians ) ( ( radians ) * ( 180.0 / M_PI ) )
 
-static const double R = 6373.00;
 static const NSInteger MAX_PLACES = 20;
+static const double maxD = 5.0;
 
 typedef NS_ENUM(NSInteger, HEADINGQUADARANT)
 {
@@ -61,14 +62,17 @@ static const double defaultLat = -33.88471;
 @property (nonatomic,assign) MAGNETIC_ magenticDirectionLng;
 @property (nonatomic,assign) HEADINGQUADARANT actualDirection;
 @property (nonatomic,assign) double distanceToOrigin;
-
+@property (nonatomic,assign) CGPoint pointInCoordinateSystem;
+@property (nonatomic,assign) CGRect overlayRect;
 - (void) fillFromDictionay:(NSDictionary*)dataDict;
 
 @end
 
 
 @interface Places : NSObject
+@property (nonatomic,assign) CGRect overlayRect;
 @property (nonatomic,strong) CLLocation* originLocation;
 @property (nonatomic, strong) NSArray* places;
 - (void) fillFromDictionay:(NSDictionary*)dataDict;
+
 @end

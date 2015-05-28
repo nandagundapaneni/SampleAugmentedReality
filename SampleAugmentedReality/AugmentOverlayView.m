@@ -149,6 +149,8 @@
         
         [aView setHidden:YES];
         
+        NSLog(@"DIST:%@",@(place.distanceToOrigin));
+        NSLog(@"PICS:%@",NSStringFromCGPoint(place.pointInCoordinateSystem));
         [self.annotationsArray addObject:aView];
         
         aviewY = CGRectGetMaxY(aView.frame);
@@ -194,4 +196,6 @@
     [self.locationManager setHeadingFilter:5];
     [self.locationManager startUpdatingHeading];
 }
+
+
 @end

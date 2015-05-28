@@ -101,7 +101,8 @@
         
     }
     [self directionToTarget:self.placeLocation.coordinate];
-    [self distanceToLocation:self.placeLocation.coordinate];
+    [self distanceToLocation:self.placeLocation];
+    [self calculatePointInCoordinateSystem];
 }
 
 - (void) directionToTarget:(CLLocationCoordinate2D)target
@@ -156,28 +157,62 @@
     
 }
 
-- (void) distanceToLocation:(CLLocationCoordinate2D)target
+- (void) distanceToLocation:(CLLocation*)target
 {
-    double dLat = degreesToRadians(target.latitude-self.originLocation.coordinate.latitude);
-    double dLon = degreesToRadians(target.longitude-self.originLocation.coordinate.longitude);
     
-    double lat1 = degreesToRadians(target.latitude);
-    double lat2 = degreesToRadians(self.originLocation.coordinate.latitude);
+    CLLocationDistance distance = [target distanceFromLocation:self.originLocation];
+    
+    //Convert distance to Miles
+    self.distanceToOrigin = distance/1600;
+}
 
-    double a = pow(sin(dLat/2), 2) + cos(lat1) * cos(lat2) * pow(sin(dLon/2), 2);
-    double c = 2 * atan2( sqrt(a), sqrt(1-a) );
-    self.distanceToOrigin = R * c;
+- (void) setOverlayRect:(CGRect)overlayRect
+{
+    _overlayRect = overlayRect;
+    
+    [self calculatePointInCoordinateSystem];
+}
+
+- (void) calculatePointInCoordinateSystem
+{
+    double x = 0.0;
+    double y = 0.0;
+    //double distancePixels = 0.0;
+    
+    
+    
+    x = (self.distanceToOrigin * cos(self.actualDirection));
+    y = (self.distanceToOrigin * sin(self.actualDirection));
+    
+    CGFloat xPercent = (self.distanceToOrigin/maxD)* cos(self.actualDirection)* CGRectGetWidth(self.overlayRect);
+    CGFloat yPercent = (self.distanceToOrigin/maxD)* sin(self.actualDirection) * CGRectGetHeight(self.overlayRect);
+    
+    self.pointInCoordinateSystem = (CGPoint){fabs(xPercent),fabs(yPercent)};
 }
 
 @end
 
 @implementation Places
 
+
+- (id) init
+{
+    self = [super init];
+    
+    if (self) {
+        self.places = @[];
+        self.originLocation = [[CLLocation alloc] initWithLatitude:defaultLat longitude:defaultLng];
+        self.overlayRect = CGRectZero;
+    }
+    
+    return self;
+}
+
+
 - (void) fillFromDictionay:(NSDictionary *)dataDict
 {
     if (dataDict == nil) {
         self.places = @[];
-        self.originLocation = [[CLLocation alloc] initWithLatitude:defaultLat longitude:defaultLng];
         return;
     }
     
@@ -197,6 +232,7 @@
                     
                     Place* currentPlace = [Place new];
                     currentPlace.originLocation = self.originLocation;
+                    currentPlace.overlayRect = self.overlayRect;
                     [currentPlace fillFromDictionay:dataDict];
 
                     
@@ -214,6 +250,15 @@
     }
     else{self.places=@[];}
     
+}
+
+- (void) setOverlayRect:(CGRect)overlayRect
+{
+    _overlayRect = overlayRect;
+    
+    for (Place* place in self.places) {
+        [place setOverlayRect:_overlayRect];
+    }
 }
 
 @end
