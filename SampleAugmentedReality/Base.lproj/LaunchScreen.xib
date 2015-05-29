@@ -11,18 +11,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cooltext119243083786259" translatesAutoresizingMaskIntoConstraints="NO" id="AHX-af-EQY">
-                    <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="480" id="0Zi-ch-lSu"/>
-                        <constraint firstAttribute="width" constant="480" id="Ho7-oM-I6Y"/>
-                    </constraints>
+                    <rect key="frame" x="124" y="0.0" width="310" height="480"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="AHX-af-EQY" secondAttribute="trailing" id="6NZ-Eb-R8o"/>
-                <constraint firstItem="AHX-af-EQY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Ov4-O2-Aue"/>
-                <constraint firstItem="AHX-af-EQY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Xbm-Ez-9v5"/>
+                <constraint firstItem="AHX-af-EQY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="EvV-YG-T0F"/>
+                <constraint firstAttribute="trailing" secondItem="AHX-af-EQY" secondAttribute="trailing" constant="46" id="Qzz-oU-ngT"/>
+                <constraint firstItem="AHX-af-EQY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="124" id="chm-6K-R2z"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
