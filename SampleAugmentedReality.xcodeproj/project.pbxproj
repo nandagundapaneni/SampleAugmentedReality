@@ -55,7 +55,7 @@
 		3674B1ED1B16563D00FFFF96 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		3674B1EE1B16563D00FFFF96 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		3674B1F21B16565000FFFF96 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		36881CA41B0D32CC007FB12F /* SampleAugmentedReality.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleAugmentedReality.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		36881CA41B0D32CC007FB12F /* SampleAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36881CA81B0D32CC007FB12F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		36881CA91B0D32CC007FB12F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		36881CAB1B0D32CC007FB12F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 		36881CA51B0D32CC007FB12F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				36881CA41B0D32CC007FB12F /* SampleAugmentedReality.app */,
+				36881CA41B0D32CC007FB12F /* SampleAR.app */,
 				36881CBD1B0D32CC007FB12F /* SampleAugmentedRealityTests.xctest */,
 			);
 			name = Products;
@@ -279,7 +279,7 @@
 			);
 			name = SampleAR;
 			productName = SampleAugmentedReality;
-			productReference = 36881CA41B0D32CC007FB12F /* SampleAugmentedReality.app */;
+			productReference = 36881CA41B0D32CC007FB12F /* SampleAR.app */;
 			productType = "com.apple.product-type.application";
 		};
 		36881CBC1B0D32CC007FB12F /* SampleAugmentedRealityTests */ = {
