@@ -265,9 +265,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		36881CA31B0D32CC007FB12F /* SampleAugmentedReality */ = {
+		36881CA31B0D32CC007FB12F /* SampleAR */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 36881CC71B0D32CD007FB12F /* Build configuration list for PBXNativeTarget "SampleAugmentedReality" */;
+			buildConfigurationList = 36881CC71B0D32CD007FB12F /* Build configuration list for PBXNativeTarget "SampleAR" */;
 			buildPhases = (
 				36881CA01B0D32CC007FB12F /* Sources */,
 				36881CA11B0D32CC007FB12F /* Frameworks */,
@@ -277,7 +277,7 @@
 			);
 			dependencies = (
 			);
-			name = SampleAugmentedReality;
+			name = SampleAR;
 			productName = SampleAugmentedReality;
 			productReference = 36881CA41B0D32CC007FB12F /* SampleAugmentedReality.app */;
 			productType = "com.apple.product-type.application";
@@ -332,7 +332,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				36881CA31B0D32CC007FB12F /* SampleAugmentedReality */,
+				36881CA31B0D32CC007FB12F /* SampleAR */,
 				36881CBC1B0D32CC007FB12F /* SampleAugmentedRealityTests */,
 			);
 		};
@@ -399,7 +399,7 @@
 /* Begin PBXTargetDependency section */
 		36881CBF1B0D32CC007FB12F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 36881CA31B0D32CC007FB12F /* SampleAugmentedReality */;
+			target = 36881CA31B0D32CC007FB12F /* SampleAR */;
 			targetProxy = 36881CBE1B0D32CC007FB12F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -572,7 +572,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		36881CC71B0D32CD007FB12F /* Build configuration list for PBXNativeTarget "SampleAugmentedReality" */ = {
+		36881CC71B0D32CD007FB12F /* Build configuration list for PBXNativeTarget "SampleAR" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				36881CC81B0D32CD007FB12F /* Debug */,
