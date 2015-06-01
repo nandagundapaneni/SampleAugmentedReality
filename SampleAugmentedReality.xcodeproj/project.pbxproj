@@ -13,7 +13,6 @@
 		3674B1F31B16565000FFFF96 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3674B1F21B16565000FFFF96 /* QuartzCore.framework */; };
 		36881CAA1B0D32CC007FB12F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 36881CA91B0D32CC007FB12F /* main.m */; };
 		36881CAD1B0D32CC007FB12F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 36881CAC1B0D32CC007FB12F /* AppDelegate.m */; };
-		36881CB01B0D32CC007FB12F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36881CAF1B0D32CC007FB12F /* ViewController.m */; };
 		36881CB31B0D32CC007FB12F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36881CB11B0D32CC007FB12F /* Main.storyboard */; };
 		36881CB51B0D32CC007FB12F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36881CB41B0D32CC007FB12F /* Images.xcassets */; };
 		36881CB81B0D32CC007FB12F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36881CB61B0D32CC007FB12F /* LaunchScreen.xib */; };
@@ -60,8 +59,6 @@
 		36881CA91B0D32CC007FB12F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		36881CAB1B0D32CC007FB12F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		36881CAC1B0D32CC007FB12F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		36881CAE1B0D32CC007FB12F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		36881CAF1B0D32CC007FB12F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		36881CB21B0D32CC007FB12F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		36881CB41B0D32CC007FB12F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		36881CB71B0D32CC007FB12F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -217,8 +214,6 @@
 		36881CD41B0D3749007FB12F /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				36881CAE1B0D32CC007FB12F /* ViewController.h */,
-				36881CAF1B0D32CC007FB12F /* ViewController.m */,
 				36881CCD1B0D3322007FB12F /* AugmentViewController.h */,
 				36881CCE1B0D3322007FB12F /* AugmentViewController.m */,
 			);
@@ -370,7 +365,6 @@
 				36881D211B0E6C9C007FB12F /* AFURLSessionManager.m in Sources */,
 				36881D2E1B0FB258007FB12F /* AnnotationView.m in Sources */,
 				36881D1F1B0E6C9C007FB12F /* AFURLRequestSerialization.m in Sources */,
-				36881CB01B0D32CC007FB12F /* ViewController.m in Sources */,
 				3674B1F11B16563D00FFFF96 /* SVProgressHUD.m in Sources */,
 				36881D201B0E6C9C007FB12F /* AFURLResponseSerialization.m in Sources */,
 				36881D271B0F8A6B007FB12F /* Place.m in Sources */,

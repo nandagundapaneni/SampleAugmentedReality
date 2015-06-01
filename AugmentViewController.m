@@ -28,37 +28,29 @@ static const double Radius = 3200;
 
 @implementation AugmentViewController
 
-
-- (id) init
+- (void) awakeFromNib
 {
-    self = [super init];
+    [super awakeFromNib];
     
-    if (self) {
-        self.modalPresentationStyle = UIModalPresentationCurrentContext;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        self.sourceType = UIImagePickerControllerSourceTypeCamera;
+        self.showsCameraControls = NO;
+        CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 71.0);
+        self.cameraViewTransform = translate;
         
-        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            self.sourceType = UIImagePickerControllerSourceTypeCamera;
-            self.showsCameraControls = NO;
-            CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, 71.0);
-            self.cameraViewTransform = translate;
-            
-            CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
-            self.cameraViewTransform = scale;
-            
-            [SVProgressHUD setBackgroundColor:[UIColor clearColor]];
-            [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
-        }
+        CGAffineTransform scale = CGAffineTransformScale(translate, 1.333333, 1.333333);
+        self.cameraViewTransform = scale;
         
-        
-        
-        
-        self.annotationsArray = [NSMutableArray new];
-
+        [SVProgressHUD setBackgroundColor:[UIColor clearColor]];
+        [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
     }
     
-    return self;
-}
+    
+    
+    
+    self.annotationsArray = [NSMutableArray new];
 
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

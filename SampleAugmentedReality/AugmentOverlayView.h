@@ -15,7 +15,6 @@
 @protocol OverlayProtocol <NSObject>
 
 - (void) showMessage:(NSString*)message;
-- (void) doneTapped;
 
 @end
 
