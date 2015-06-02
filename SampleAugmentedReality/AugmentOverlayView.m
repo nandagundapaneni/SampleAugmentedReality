@@ -7,13 +7,14 @@
 //
 
 #import "AugmentOverlayView.h"
-#import "AnnotationView.h"
 
 
-@interface AugmentOverlayView ()
+@interface AugmentOverlayView ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic) CGRect fieldOfView;
 @property (nonatomic, strong) NSMutableArray* annotationsArray;
+@property (nonatomic, strong) NSMutableArray* visiblePlacesArray;
+@property (nonatomic, strong) UITableView* placesTableView;
 
 @end
 
@@ -26,7 +27,10 @@
          [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.4]];
         
         _annotationsArray = [NSMutableArray new];
+        _visiblePlacesArray = [NSMutableArray new];
         _currentQuadrant = HEADINGQUADARANT_NE;
+        
+        [self addSubview:self.placesTableView];
     }
     
     return self;
@@ -39,6 +43,63 @@
     }
     
     return _locationManager;
+}
+
+- (UITableView*) placesTableView
+{
+    if (_placesTableView == nil) {
+        _placesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 50, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds)-50) style:UITableViewStylePlain];
+        [_placesTableView setBackgroundColor:[UIColor clearColor]];
+        [_placesTableView setTableFooterView:[UIView new]];
+        [_placesTableView setDataSource:self];
+        [_placesTableView setDelegate:self];
+        [_placesTableView setHidden:YES];
+        [_placesTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    }
+    
+    return _placesTableView;
+}
+
+#pragma mark - UITableView Datasource and Delegate Methods
+
+- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.visiblePlacesArray.count;
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString* const cellIdentifier = @"cell";
+    
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        [cell setBackgroundColor:[UIColor clearColor]];
+        [cell.textLabel setTextColor:[UIColor whiteColor]];
+        [cell.textLabel setLineBreakMode:NSLineBreakByWordWrapping];
+        [cell.textLabel setFont:[UIFont fontWithName:@"SanFranciscoRounded-Medium" size:16.0]];
+    }
+    
+    Place* place = self.visiblePlacesArray[indexPath.row];
+    
+    [cell.textLabel setText:place.name];
+    
+    return cell;
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Place* place = self.visiblePlacesArray[indexPath.row];
+    
+    NSString* message = [NSString stringWithFormat:@"NAME:%@\nADDRESS:%@",place.name,place.vicinityAddress];
+    
+    [self.overlayDelegate showMessage:message];
 }
 
 - (void) setPlaces:(Places *)places
@@ -112,47 +173,22 @@
 - (void) drawAnnotations
 {
     
-    for (UIView* sview in self.annotationsArray) {
-        [sview removeFromSuperview];
-    }
-    
-    [self.annotationsArray removeAllObjects];
-    
-    CGFloat aviewY = 50;
-    
-    for (Place* place in self.places.places) {
-        AnnotationView* aView = [[AnnotationView alloc] initWithFrame:CGRectMake(40, aviewY, CGRectGetWidth(self.frame), 30)];
-        [aView setPlace:place];
-        [self addSubview:aView];
-        
-        [aView setHidden:YES];
-        
-        NSLog(@"DIST:%@",@(place.distanceToOrigin));
-        NSLog(@"PICS:%@",NSStringFromCGPoint(place.pointInCoordinateSystem));
-        [self.annotationsArray addObject:aView];
-        
-        aviewY = CGRectGetMaxY(aView.frame);
-        
-        __weak AugmentOverlayView* weakself = self;
-        [aView setShowAlert:^(NSString *showMessage) {
-            [weakself.overlayDelegate showMessage:showMessage];
-        }];
-    }
-    
+    [self.placesTableView setHidden:NO];
     [self showAnnotationsForCurrentFieldOfView];
 
 }
 
 - (void) showAnnotationsForCurrentFieldOfView
 {
-    for (AnnotationView* aView in self.annotationsArray) {
-        if (self.currentQuadrant == aView.place.actualDirection) {
-            [aView setHidden:NO];
-        }
-        else{
-            [aView setHidden:YES];
+    [self.visiblePlacesArray removeAllObjects];
+    
+    for (Place* place in self.places.places) {
+        if (self.currentQuadrant == place.actualDirection) {
+            [self.visiblePlacesArray addObject:place];
         }
     }
+    
+    [self.placesTableView reloadData];
 }
 
 - (void) layoutSubviews

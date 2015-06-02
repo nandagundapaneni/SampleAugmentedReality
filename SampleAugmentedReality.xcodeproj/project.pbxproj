@@ -33,7 +33,6 @@
 		36881D211B0E6C9C007FB12F /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 36881D181B0E6C9C007FB12F /* AFURLSessionManager.m */; };
 		36881D241B0E6CC8007FB12F /* PlacesDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36881D231B0E6CC8007FB12F /* PlacesDataController.m */; };
 		36881D271B0F8A6B007FB12F /* Place.m in Sources */ = {isa = PBXBuildFile; fileRef = 36881D261B0F8A6B007FB12F /* Place.m */; };
-		36881D2E1B0FB258007FB12F /* AnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 36881D2D1B0FB258007FB12F /* AnnotationView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,8 +94,6 @@
 		36881D231B0E6CC8007FB12F /* PlacesDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacesDataController.m; sourceTree = "<group>"; };
 		36881D251B0F8A6B007FB12F /* Place.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Place.h; sourceTree = "<group>"; };
 		36881D261B0F8A6B007FB12F /* Place.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Place.m; sourceTree = "<group>"; };
-		36881D2C1B0FB258007FB12F /* AnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationView.h; sourceTree = "<group>"; };
-		36881D2D1B0FB258007FB12F /* AnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,8 +222,6 @@
 			children = (
 				36881CD01B0D3632007FB12F /* AugmentOverlayView.h */,
 				36881CD11B0D3632007FB12F /* AugmentOverlayView.m */,
-				36881D2C1B0FB258007FB12F /* AnnotationView.h */,
-				36881D2D1B0FB258007FB12F /* AnnotationView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -363,7 +358,6 @@
 				36881D191B0E6C9C007FB12F /* AFHTTPRequestOperation.m in Sources */,
 				36881D1C1B0E6C9C007FB12F /* AFNetworkReachabilityManager.m in Sources */,
 				36881D211B0E6C9C007FB12F /* AFURLSessionManager.m in Sources */,
-				36881D2E1B0FB258007FB12F /* AnnotationView.m in Sources */,
 				36881D1F1B0E6C9C007FB12F /* AFURLRequestSerialization.m in Sources */,
 				3674B1F11B16563D00FFFF96 /* SVProgressHUD.m in Sources */,
 				36881D201B0E6C9C007FB12F /* AFURLResponseSerialization.m in Sources */,
