@@ -14,8 +14,8 @@
 
 @protocol OverlayProtocol <NSObject>
 
-- (void) showMessage:(NSString*)message;
-
+- (void) showMessage:(NSString*)message forPlace:(Place*)place;
+- (void) refreshTapped;
 @end
 
 

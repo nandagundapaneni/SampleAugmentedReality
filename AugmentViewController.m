@@ -12,6 +12,7 @@
 #import "PlacesDataController.h"
 #import "Place.h"
 #import "SVProgressHUD.h"
+#import <MapKit/MapKit.h>
 
 static const double Radius = 3200;
 
@@ -145,11 +146,19 @@ static const double Radius = 3200;
 
 #pragma mark - Overlay Delegate
 
-- (void) doneTapped
+- (void) refreshTapped
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [SVProgressHUD show];
+    [[PlacesDataController manager] retrievePlacesOfInterestForLocation:self.currentLocation inRadius:Radius onCompletion:^(Places *placesData, NSError *error) {
+        [SVProgressHUD dismiss];
+        self.currentPlacesData = placesData;
+        [self.currentPlacesData setOverlayRect:self.overlayView.bounds];
+        [self.overlayView setPlaces:self.currentPlacesData];
+        
+    }];
+
 }
-- (void) showMessage:(NSString *)message
+- (void) showMessage:(NSString *)message forPlace:(Place *)place
 {
     UIAlertController* ac = [UIAlertController alertControllerWithTitle:@"Details" message:message preferredStyle:UIAlertControllerStyleAlert];
     
@@ -158,6 +167,24 @@ static const double Radius = 3200;
     }];
     
     [ac addAction:cancel];
+    
+    
+    UIAlertAction* mapIt = [UIAlertAction actionWithTitle:@"Show in Map" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        CLLocationCoordinate2D endingCoord = place.placeLocation.coordinate;
+        
+        MKPlacemark *endLocation = [[MKPlacemark alloc] initWithCoordinate:endingCoord addressDictionary:nil];
+        MKMapItem *endingItem = [[MKMapItem alloc] initWithPlacemark:endLocation];
+        endingItem.name = place.name;
+        
+        NSMutableDictionary *launchOptions = [[NSMutableDictionary alloc] init];
+        [launchOptions setObject:MKLaunchOptionsDirectionsModeWalking forKey:MKLaunchOptionsDirectionsModeKey];
+        
+        [endingItem openInMapsWithLaunchOptions:launchOptions];
+        
+    }];
+    
+    [ac addAction:mapIt];
     
     [self presentViewController:ac animated:YES completion:nil];
 }
